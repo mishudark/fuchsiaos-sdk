@@ -824,3 +824,6 @@ clear
 
 echo "FuchsiaOS SDK has been installed"
 echo "cd $SDK_DIR"
+echo ""
+echo "Try to compile an app"
+echo "    bazel build //flutter:package --config=fuchsia"
