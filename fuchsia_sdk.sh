@@ -751,7 +751,7 @@ function install_sdk(){
 
 function workspace() {
 	chmod +w $SDK_DIR/WORKSPACE
-	cat << EOF >> $SDK_DIR/WORKSPACE
+	cat << EOF > $SDK_DIR/WORKSPACE
 # Copyright 2018 The Fuchsia Authors. All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
@@ -784,18 +784,22 @@ EOF
 }
 
 function bazelrc(){
-	cat << EOF >> $SDK_DIR/.bazelrc
+	cat << EOF > $SDK_DIR/.bazelrc
 build:fuchsia --crosstool_top=@fuchsia_crosstool//:toolchain
 build:fuchsia --cpu=x86_64
 build:fuchsia --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 EOF
 }
 
+install_bazel
+export_bin
+clear
 create_cipd
 setup_cipd
 install_sdk
 workspace
 bazelrc
-install_bazel
-export_bin
 clear
+
+echo "FuchsiaOS SDK has been installed"
+echo "cd $SDK_DIR"
