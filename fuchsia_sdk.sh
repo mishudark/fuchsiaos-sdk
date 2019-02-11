@@ -31,7 +31,7 @@ esac
 
 function install_bazel() {
 	echo -e "${GREEN}Checking Bazel version${NC}"
-	if command -v bazel; then
+	if type bazel >/dev/null ; then
 		v=$(bazel version |grep label|awk '{ print $3 }')
 		if [[ $v == $BAZEL_VERSION ]]; then
 			return
