@@ -24,7 +24,7 @@ case "${HOST_PLATFORM}" in
 		BASH_RC=$HOME/.bash_profile
 		;;
 	*)
-    echo "Unknown operating system." >&2
+		echo "Unknown operating system." >&2
 		exit 1
 		;;
 esac
