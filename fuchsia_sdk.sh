@@ -26,6 +26,14 @@ case "${HOST_PLATFORM}" in
 esac
 
 function install_bazel() {
+	echo "Checking Bazel version"
+	if command -v bazel; then
+		v=$(bazel version |grep label|awk '{ print $3 }')
+		if [[ $v == $BAZEL_VERSION ]]; then
+			return
+		fi
+	fi
+
 	URL="https://releases.bazel.build/${BAZEL_VERSION}/release/bazel-${BAZEL_VERSION}-installer-${OS}-x86_64.sh"
 	echo "Downloading Bazel ..."
 
@@ -791,6 +799,18 @@ build:fuchsia --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 EOF
 }
 
+function flutter_app(){
+	if [[ -f ${SDK_DIR}/flutter ]]; then
+		return
+	fi
+
+	echo "Creating demo flutter app ..."
+	curl -SLo ${SDK_DIR}/flutter_app.tar.gz	https://github.com/mishudark/fuchsiaos-sdk/releases/download/0.1.0/flutter_app.tar.gz
+	cd $SDK_DIR
+	tar -xzvf flutter_app.tar.gz
+	rm flutter_app.tar.gz
+}
+
 install_bazel
 export_bin
 clear
@@ -799,6 +819,7 @@ setup_cipd
 install_sdk
 workspace
 bazelrc
+flutter_app
 clear
 
 echo "FuchsiaOS SDK has been installed"
