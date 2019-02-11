@@ -7,6 +7,10 @@ BAZEL_VERSION=0.22.0
 SDK_DIR=${HOME}/sdk/fuchsia-bazel
 ZSH_RC=$HOME/.zshrc
 
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
 declare HOST_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')"
 case "${HOST_PLATFORM}" in
 	linux)
@@ -26,7 +30,7 @@ case "${HOST_PLATFORM}" in
 esac
 
 function install_bazel() {
-	echo "Checking Bazel version"
+	echo -e "${GREEN}Checking Bazel version${NC}"
 	if command -v bazel; then
 		v=$(bazel version |grep label|awk '{ print $3 }')
 		if [[ $v == $BAZEL_VERSION ]]; then
@@ -753,7 +757,7 @@ chmod +x cipd
 }
 
 function install_sdk(){
-	echo "Installing SDK..."
+	echo -e "${GREEN}Installing SDK...${NC}"
 	./cipd install fuchsia/sdk/bazel/${OS_CIPD}-amd64 latest -root ${SDK_DIR}
 }
 
@@ -811,9 +815,19 @@ function flutter_app(){
 	rm flutter_app.tar.gz
 }
 
+function usage(){
+	
+	echo -e "${GREEN}FuchsiaOS SDK has been installed${NC}"
+	echo "    cd $SDK_DIR"
+	echo ""
+	echo -e "${GREEN}Try to compile an app${NC}"
+	echo "    bazel build //flutter:package --config=fuchsia"
+}
+
 install_bazel
 export_bin
 clear
+
 create_cipd
 setup_cipd
 install_sdk
@@ -822,8 +836,4 @@ bazelrc
 flutter_app
 clear
 
-echo "FuchsiaOS SDK has been installed"
-echo "cd $SDK_DIR"
-echo ""
-echo "Try to compile an app"
-echo "    bazel build //flutter:package --config=fuchsia"
+usage
