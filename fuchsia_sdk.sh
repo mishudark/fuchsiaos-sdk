@@ -3,7 +3,7 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-set -eo pipefail; [[ "${TRACE}" ]] && set -x
+set -o pipefail; [[ "${TRACE}" ]] && set -x
 
 BAZEL_VERSION=0.22.0
 SDK_DIR=${HOME}/sdk/fuchsia-bazel
